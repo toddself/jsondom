@@ -4,7 +4,8 @@
   "description": "A DOM-like interface for querying Javascript Objects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha test/index.js",
+    "lint": "./node_modules/.bin/jshint **/*js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,10 @@
   "license": "MIT",
   "dependencies": {
     "traverse": "~0.6.3"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.1",
+    "chai": "~1.7.2",
+    "jshint": "~2.1.10"
   }
 }
