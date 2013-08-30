@@ -1,16 +1,18 @@
+[![build status](https://secure.travis-ci.org/CondeNast/jsondom.png)](http://travis-ci.org/CondeNast/jsondom)
+
 # JSON DOM
 A DOM-like interface for querying complex Javascript objects. (Also a very light wrapper around [js-traverse](/substack/js-traverse)).
 
 ## Installation
 
 ```
-npm install json-dom
+npm install jsondom
 ```
 
 ## Usage
 
 ```js
-> var jsd = require('json-dom');
+> var jsd = require('jsondom');
 > var complex = {
   title: "this is a test",
   articles: [
