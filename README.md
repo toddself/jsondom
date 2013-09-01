@@ -62,22 +62,22 @@ npm install jsondom
  * Returns a node of the tree if any of the keys or values in the node match the
  * provided criteria
  * @param  {Object}   tree      Object graph
- * @param  {String}   needle    The value you're looking for
+ * @param  {Mixed}    needle    A string or RegExp describing what to find
  * @param  {Boolean}  (parents) Should it return the parent of the matching element
  * @return {Array}              An array of parent nodes which have matching children
  */
 };
 ```
 
-#### `getValuesByKey(tree, key, maxDepth)`
+### `getValuesByKey(tree, key, maxDepth)`
 
 ```
 /**
  * Gets all values from object graph that exist at the specified key name
- * @param  {Object}   tree      Object graph
- * @param  {String}   key       Name of key
- * @param  {Integer} (maxDepth) Max recursion depth, zero means no maxDepth. Default zero
- * @return {Array}              Array of values from matching keys
+ * @param  {Object}   tree       Object graph
+ * @param  {Mixed}    key        A RegExp or string for the key you're trying to find
+ * @param  {Integer}  (maxDepth) Max recursion depth
+ * @return {Array}               Array of values from matching keys
  */
 ```
 
