@@ -28,7 +28,7 @@ describe('json-dom', function(){
   it('Should return a path to a key', function(){
     var paths = jsd.getPathToKey(complex, /hello/);
     expect(paths.length).to.equal(1);
-    expect(paths[0]).to.equal('articles.1.hello');
+    expect(paths[0]).to.equal('articles/1/hello');
   });
 
   it('Should find all titles', function(){

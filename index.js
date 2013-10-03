@@ -1,5 +1,6 @@
 'use strict';
 var traverse = require('traverse');
+var pathSep = '/';
 
 /**
  * Takes an array of nodes to the content location and returns the value located
@@ -11,7 +12,7 @@ var traverse = require('traverse');
  */
 var valueFromPath = exports.valueFromPath = function(tree, key_array, getParent){
   if(typeof key_array === 'string'){
-    key_array = key_array.split('.');
+    key_array = key_array.split(pathSep);
   }
 
   if(getParent){
@@ -57,7 +58,7 @@ exports.getPathToKey = function(tree, key){
 
   traverse(tree).forEach(function(nodeValue){
     if(typeof this.key === 'string' && this.key.match(exp)){
-      paths.push(this.path.join('.'));
+      paths.push(this.path.join(pathSep));
     }
   });
 
