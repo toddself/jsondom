@@ -55,6 +55,31 @@ npm install jsondom
 
 ## Methods
 
+### `valueFromPath(tree, key_array, getParent)`
+
+```
+/**
+ * Takes an array of nodes to the content location and returns the value located
+ * at that point. Can we used to return the parent node as well.
+ * @param  {Object}   tree        Object graph
+ * @param  {Array}    key_array   An array of keys, traversable from the left
+ * @param  {Boolean}  (getParent) Flag to return parent or element. Default: element
+ * @return {Mixed}                The content located at that point in the tree
+ */
+```
+
+### `getPathToKey(tree, key)`
+
+```
+/**
+ * Gets the path to a particular key in the Object
+ * @param  {Object} tree Object graph
+ * @param  {Mixed}  key  String or RegExp
+ * @return {Array}       Array of decimal separated paths to object suitable to
+ *                       use with valueFromKeyPath
+ */
+```
+
 ### `getNodesMatching(tree, needle, parent)`
 
 ```

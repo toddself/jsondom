@@ -19,6 +19,18 @@ describe('json-dom', function(){
     ]
   };
 
+  it('Should return a value to a path', function(){
+    var paths = jsd.getPathToKey(complex, /hello/);
+    var value = jsd.valueFromPath(complex, paths[0]);
+    expect(value).to.equal("it is me you're looking for");
+  });
+
+  it('Should return a path to a key', function(){
+    var paths = jsd.getPathToKey(complex, /hello/);
+    expect(paths.length).to.equal(1);
+    expect(paths[0]).to.equal('articles.1.hello');
+  });
+
   it('Should find all titles', function(){
     var titles = jsd.getValuesByKeyName(complex, 'title');
     expect(titles.length).to.equal(2);
@@ -42,14 +54,6 @@ describe('json-dom', function(){
       var articles = jsd.getNodesMatching(complex, {});
     } catch (e){
       expect(e.message).to.equal('Needle must be either a string or a RegExp');
-    }
-  });
-
-  it('Should reject keys that aren\'t strings or RegExps', function(){
-    try {
-      var articles = jsd.getValuesByKeyName(complex, {});
-    } catch (e){
-      expect(e.message).to.equal('Key must be either a string or a RegExp');
     }
   });
 

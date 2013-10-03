@@ -4,13 +4,16 @@ var traverse = require('traverse');
 /**
  * Takes an array of nodes to the content location and returns the value located
  * at that point. Can we used to return the parent node as well.
- * @private
  * @param  {Object}   tree        Object graph
  * @param  {Array}    key_array   An array of keys, traversable from the left
  * @param  {Boolean}  (getParent) Flag to return parent or element. Default: element
  * @return {Mixed}                The content located at that point in the tree
  */
-function _valueFromKeyArray(tree, key_array, getParent){
+var valueFromPath = exports.valueFromPath = function(tree, key_array, getParent){
+  if(typeof key_array === 'string'){
+    key_array = key_array.split('.');
+  }
+
   if(getParent){
     key_array.splice(key_array.length-1, 1);
   }
@@ -18,7 +21,48 @@ function _valueFromKeyArray(tree, key_array, getParent){
   return key_array.reduce(function(acc, el){
     return acc[el];
   }, tree);
+};
+
+/**
+ * Cohearses `expr` into a RegExp or throws an error if it can't
+ * @private
+ * @param  {Mixed}  expr RegExp or string.
+ * @return {Object}      Strict Regular Expression version of string
+ */
+function _regExpOrGTFO(expr){
+  var exp;
+
+  if(typeof expr === 'string'){
+    exp = new RegExp('^'+expr+'$');
+  } else if (expr instanceof RegExp){
+    exp = expr;
+  } else {
+    throw new Error('Needle must be either a string or a RegExp');
+  }
+
+  return exp;
 }
+
+/**
+ * Gets the path to a particular key in the Object
+ * @param  {Object} tree Object graph
+ * @param  {Mixed}  key  String or RegExp
+ * @return {Array}       Array of decimal separated paths to object suitable to
+ *                       use with valueFromKeyPath
+ */
+exports.getPathToKey = function(tree, key){
+  var paths = [];
+
+  var exp = _regExpOrGTFO(key);
+
+  traverse(tree).forEach(function(nodeValue){
+    if(typeof this.key === 'string' && this.key.match(exp)){
+      paths.push(this.path.join('.'));
+    }
+  });
+
+  return paths;
+};
 
 /**
  * Returns a node of the tree if any of the keys or values in the node match the
@@ -30,21 +74,13 @@ function _valueFromKeyArray(tree, key_array, getParent){
  */
 exports.getNodesMatching = function(tree, needle, parent){
   var nodes = [];
-  var exp;
-
-  if(typeof needle === 'string'){
-    exp = new RegExp('^'+needle+'$');
-  } else if (needle instanceof RegExp){
-    exp = needle;
-  } else {
-    throw new Error('Needle must be either a string or a RegExp');
-  }
+  var exp = _regExpOrGTFO(needle);
 
   traverse(tree).forEach(function(nodeValue){
     var keyMatch = typeof this.key === 'string' && this.key.match(exp);
     var nodeMatch = typeof nodeValue === 'string' && nodeValue.match(exp);
     if(keyMatch || nodeMatch){
-      nodes.push(_valueFromKeyArray(tree, this.path, parent));
+      nodes.push(valueFromPath(tree, this.path, parent));
     }
   });
   return nodes;
@@ -58,17 +94,9 @@ exports.getNodesMatching = function(tree, needle, parent){
  * @return {Array}              Array of values from matching keys
  */
 exports.getValuesByKeyName = function(tree, key, maxDepth){
-  var exp;
+  var exp = _regExpOrGTFO(key);
   if(typeof maxDepth === 'undefined'){
     maxDepth = 0;
-  }
-
-  if(typeof key === 'string'){
-    exp = new RegExp('^'+key+'$');
-  } else if (key instanceof RegExp){
-    exp = key;
-  } else {
-    throw new Error('Key must be either a string or a RegExp');
   }
 
   var values = [];
