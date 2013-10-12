@@ -55,6 +55,18 @@ npm install jsondom
 
 ## Methods
 
+### `getValuesFromPartialPath(tree, key)`
+
+```
+/**
+ * Gets an array of values from a path which ends with the given path fragment.
+ * This method optionally takes an array to generate the path end data from
+ * @param  {Object} tree Object graph
+ * @param  {Mixed}  key  String or Array
+ * @return {Array}       Array of values matching partial path
+ */
+```
+
 ### `valueFromPath(tree, key_array, getParent)`
 
 ```

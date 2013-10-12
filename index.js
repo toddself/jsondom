@@ -51,7 +51,7 @@ function _regExpOrGTFO(expr){
  * @return {Array}       Array of decimal separated paths to object suitable to
  *                       use with valueFromKeyPath
  */
-exports.getPathToKey = function(tree, key){
+var getPathToKey = exports.getPathToKey = function(tree, key){
   var paths = [];
 
   var exp = _regExpOrGTFO(key);
@@ -66,6 +66,45 @@ exports.getPathToKey = function(tree, key){
 };
 
 /**
+ * Gets an array of values from a path which ends with the given path fragment.
+ * This method optionally takes an array to generate the path end data from
+ * @param  {Object} tree Object graph
+ * @param  {Mixed}  key  String or Array
+ * @return {Array}       Array of values matching partial path
+ */
+var getValuesFromPartialPath = exports.getValuesFromPartialPath = function(tree, key){
+  if(typeof key === 'string'){
+    key = key.split('/');
+  }
+
+  if(!Array.isArray(key)){
+    throw new Error('Key must be either an array or string');
+  }
+
+  if(typeof key === 'string'){
+    key = key.split('/');
+  }
+
+  var nodes = [];
+
+  function _doSearch(tree, keyList){
+    var key = keyList.shift();
+    traverse(tree).forEach(function(nodeValue){
+      if(this.key === key){
+        if(keyList.length === 0){
+          nodes.push(nodeValue);
+        } else if(this.notLeaf){
+          _doSearch(nodeValue, keyList);
+        }
+      }
+    });
+  }
+
+  _doSearch(tree, key);
+  return nodes;
+};
+
+/**
  * Returns a node of the tree if any of the keys or values in the node match the
  * provided criteria
  * @param  {Object}   tree      Object graph
@@ -73,7 +112,7 @@ exports.getPathToKey = function(tree, key){
  * @param  {Boolean}  (parents) Should it return the parent of the matching element
  * @return {Array}              An array of parent nodes which have matching children
  */
-exports.getNodesMatching = function(tree, needle, parent){
+var getNodesMatching = exports.getNodesMatching = function(tree, needle, parent){
   var nodes = [];
   var exp = _regExpOrGTFO(needle);
 
@@ -94,7 +133,7 @@ exports.getNodesMatching = function(tree, needle, parent){
  * @param  {Integer} (maxDepth) Max recursion depth
  * @return {Array}              Array of values from matching keys
  */
-exports.getValuesByKeyName = function(tree, key, maxDepth){
+var getValuesByKeyName = exports.getValuesByKeyName = function(tree, key, maxDepth){
   var exp = _regExpOrGTFO(key);
   if(typeof maxDepth === 'undefined'){
     maxDepth = 0;
