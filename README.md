@@ -1,4 +1,4 @@
-[![build status](https://secure.travis-ci.org/CondeNast/jsondom.png)](http://travis-ci.org/CondeNast/jsondom)
+[![build status](https://secure.travis-ci.org/toddself/jsondom.png)](http://travis-ci.org/CondeNast/jsondom)
 
 # JSON DOM
 A DOM-like interface for querying complex Javascript objects. (Also a very light wrapper around [js-traverse](/substack/js-traverse)).
